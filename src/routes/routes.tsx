@@ -6,6 +6,8 @@ const RoutesComponent = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/viewAll/:type" element={<Home />} />
+
     </Routes>
   )
 }

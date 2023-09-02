@@ -4,28 +4,16 @@ import {
   Select,
   TextField,
   MenuItem,
-  SelectChangeEvent,
   InputAdornment,
-  IconButton,
   Grid,
-  InputLabel,
   Button,
 } from "@mui/material";
 import { theme } from "../../themes/theme";
 import SearchIcon from "@mui/icons-material/Search";
 import { styled } from "@mui/material/styles";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
+import { SelectChangeEvent } from '@mui/material/Select';
 
-type changeInputType = (
-  e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-) => void;
-
-interface Params {
-  // handleChangeInput: changeInputType;
-  // handleChange: (event: SelectChangeEvent<unknown>) => void;
-  // filter: string;
-  // loadingCities: boolean;
-}
 const CustomSelect = styled(Select)(() => ({
   "& .MuiOutlinedInput-notchedOutline": {
     borderColor: "black",
@@ -35,11 +23,26 @@ const CustomSelect = styled(Select)(() => ({
   },
 }));
 
+type changeEventType = ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
+
 const Filter = () => {
-  // const { handleChangeInput, handleChange, filter, loadingCities } = params;
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState("")
+
+  const handleChangeInput = (e: changeEventType) => {
+    setSearch(e.target.value);
+  };
+  const handleChange = (event: SelectChangeEvent<unknown>) => {
+    setFilter(event.target.value as string);
+  };
+
+  //   ========== SEACH AND FILTER ==========
+  const handleSearch = () => {
+    console.log("a buscar", search, filter);
+  };
 
   return (
-    <Box sx={{ padding: "10px", width: "60%" }}>
+    <Box sx={{ padding: "10px", width: "70%" }}>
       <Grid container spacing={2}>
         <Grid item xs={6} md={6}>
           <TextField
@@ -48,7 +51,7 @@ const Filter = () => {
             name="search"
             InputLabelProps={{ style: { color: theme.colors.black } }}
             sx={theme.inputsDark}
-            // onChange={(e) => handleChangeInput(e)}
+            onChange={(e) => handleChangeInput(e)}
             fullWidth
             InputProps={{
               endAdornment: (
@@ -61,12 +64,11 @@ const Filter = () => {
         </Grid>
         <Grid item xs={3} md={3}>
           <FormControl fullWidth>
-            
             <CustomSelect
               labelId="demo-simple-select-required-label"
               id="demo-simple-select-required"
-              value={""}
-              // onChange={handleChange}
+              value={filter}
+              onChange={handleChange}
               fullWidth
               displayEmpty
             >
@@ -74,7 +76,6 @@ const Filter = () => {
               <MenuItem value="music">music</MenuItem>
               <MenuItem value="musicVideo">video</MenuItem>
               <MenuItem value="podcast">podcast</MenuItem>
-
             </CustomSelect>
           </FormControl>
         </Grid>
@@ -82,6 +83,7 @@ const Filter = () => {
           <Button
             sx={() => theme.buttons(theme.colors.black, theme.colors.white)}
             size="large"
+            onClick={()=>handleSearch()}
           >
             Search
           </Button>
