@@ -51,8 +51,8 @@ const CardFilter = ({ data, text, isVideo }: Params) => {
         }}
       >
         {data.resultCount > 0
-          ? data.results.map((v) => (
-              <CardComponent data={v} isVideo={isVideo} />
+          ? data.results.map((v, index) => (
+              <CardComponent key = {index} data={v} isVideo={isVideo} />
             ))
           : null}
       </CardContent>

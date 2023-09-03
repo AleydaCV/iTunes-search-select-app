@@ -38,52 +38,54 @@ const Filter = (params: Params) => {
     params;
   return (
     <Box sx={{ padding: "10px", width: "70%" }}>
-      <Grid container spacing={2}>
-        <Grid item xs={6} md={6}>
-          <TextField
-            required
-            placeholder="Buscar"
-            name="search"
-            InputLabelProps={{ style: { color: theme.colors.black } }}
-            sx={theme.inputsDark}
-            onChange={(e) => handleChangeInput(e)}
-            fullWidth
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <SearchIcon sx={{ color: theme.colors.black }} />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </Grid>
-        <Grid item xs={3} md={3}>
-          <FormControl fullWidth>
-            <CustomSelect
-              labelId="demo-simple-select-required-label"
-              id="demo-simple-select-required"
-              value={filter}
-              onChange={handleChange}
+      <form>
+        <Grid container spacing={2}>
+          <Grid item xs={6} md={6}>
+            <TextField
+              required
+              placeholder="Buscar"
+              name="search"
+              InputLabelProps={{ style: { color: theme.colors.black } }}
+              sx={theme.inputsDark}
+              onChange={(e) => handleChangeInput(e)}
               fullWidth
-              displayEmpty
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <SearchIcon sx={{ color: theme.colors.black }} />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Grid>
+          <Grid item xs={3} md={3}>
+            <FormControl fullWidth>
+              <CustomSelect
+                labelId="demo-simple-select-required-label"
+                id="demo-simple-select-required"
+                value={filter}
+                onChange={handleChange}
+                fullWidth
+                displayEmpty
+              >
+                <MenuItem value=""> all</MenuItem>
+                <MenuItem value="song">music</MenuItem>
+                <MenuItem value="musicVideo">video</MenuItem>
+                <MenuItem value="podcast">podcast</MenuItem>
+              </CustomSelect>
+            </FormControl>
+          </Grid>
+          <Grid item xs={3} md={3}>
+            <Button
+              sx={() => theme.buttons(theme.colors.black, theme.colors.white)}
+              size="large"
+              onClick={() => handleSearch()}
             >
-              <MenuItem value=""> all</MenuItem>
-              <MenuItem value="song">music</MenuItem>
-              <MenuItem value="musicVideo">video</MenuItem>
-              <MenuItem value="podcast">podcast</MenuItem>
-            </CustomSelect>
-          </FormControl>
+              Search
+            </Button>
+          </Grid>
         </Grid>
-        <Grid item xs={3} md={3}>
-          <Button
-            sx={() => theme.buttons(theme.colors.black, theme.colors.white)}
-            size="large"
-            onClick={() => handleSearch()}
-          >
-            Search
-          </Button>
-        </Grid>
-      </Grid>
+      </form>
     </Box>
   );
 };

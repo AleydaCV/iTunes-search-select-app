@@ -5,7 +5,6 @@ interface returnI<T> {
 
 export const getService  = async  <T> (param : string) : Promise<returnI<T>> => {
     const url= "https://itunes.apple.com/"+param;
-    console.log('url', url)
     try {
       const response = await fetch(url , {
         method: 'GET',

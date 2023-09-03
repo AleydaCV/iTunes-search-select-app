@@ -3,16 +3,21 @@ import { ChangeEvent, useState } from "react";
 import Filter from "./Filter";
 import CardTypeHolder from "../CardType/CardTypeHolder";
 import { getSearchFilterLimit } from "../../useServices/itunesService";
-import {  ResType } from "../../interface/iTunes";
+import { ResType } from "../../interface/iTunes";
+import CircularProgress from "@mui/material/CircularProgress";
 
 type changeEventType = ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
 
 const Body = () => {
   // ========= Data Types =======
+  const [data, setData] = useState({
+    song: {} as ResType,
+    musicVideo: {} as ResType,
+    podcast: {} as ResType,
+  });
 
-  const [musicData, setMusicData] = useState({} as ResType);
-  const [videoData, setVideoData] = useState({} as ResType);
-  const [podcastData, setPodcastData] = useState({} as ResType);
+  // ========= Loading  =======
+  const [loading, setLoading] = useState<boolean>();
 
   // ========= Search and Filter  =======
   const [search, setSearch] = useState("");
@@ -28,56 +33,61 @@ const Body = () => {
   // ========= Submit Search and Filter  =======
 
   const handleSearch = async () => {
-    setMusicData({} as ResType)
-    setVideoData({} as ResType)
-    setPodcastData({} as ResType)
+    setLoading(true);
+
+    setData({
+      song: {} as ResType,
+      musicVideo: {} as ResType,
+      podcast: {} as ResType,
+    });
     const encodedSearch = encodeURIComponent(search).replace(/%20/g, "+");
+
     if (search != "" && filter != "") {
-      let limit = '10';
-      if (filter=="musicVideo"){
-        limit='6'
-      }
+      const limits = {
+        songPodcast: "10",
+        musicVideo: "6",
+      };
+
       const { res } = await getSearchFilterLimit<ResType>(
         encodedSearch,
         filter,
-        limit
+        filter == "musicVideo" ? limits.musicVideo : limits.songPodcast
       );
-      if (filter == "song") {
-        setMusicData(res);
-        return;
-      }
-
-      if (filter == "musicVideo") {
-        setVideoData(res);
-        return;
-      }
-      setPodcastData(res);
-      return;
-    }
-    if (filter == "") {
-      console.log("all");
-      const { res: music } = await getSearchFilterLimit<ResType>(
+      setData((prevData) => ({
+        ...prevData,
+        [filter]: res,
+      }));
+      setLoading(false);
+    } else if (filter == "") {
+      const limits = {
+        songPodcast: "5",
+        musicVideo: "3",
+      };
+      const music = await getSearchFilterLimit<ResType>(
         encodedSearch,
         "song",
-        "5"
+        limits.songPodcast
       );
-      setMusicData(music);
-
-      const { res: resVideo } = await getSearchFilterLimit<ResType>(
+      const resVideo = await getSearchFilterLimit<ResType>(
         encodedSearch,
         "musicVideo",
-        "3"
+        limits.musicVideo
       );
-      setVideoData(resVideo);
-
-      const { res: podcast } = await getSearchFilterLimit<ResType>(
+      const podcast = await getSearchFilterLimit<ResType>(
         encodedSearch,
         "podcast",
-        "5"
+        limits.songPodcast
       );
-      setPodcastData(podcast);
+
+      setData({
+        song: music.res,
+        musicVideo: resVideo.res,
+        podcast: podcast.res,
+      });
+      setLoading(false);
     }
   };
+
   return (
     <Box sx={{ padding: "40px" }}>
       <Filter
@@ -89,11 +99,18 @@ const Body = () => {
       />
 
       {/* <CardHolder></CardHolder> */}
-      <CardTypeHolder
-        musicData={musicData}
-        videoData={videoData}
-        podcastData={podcastData}
-      />
+      {!loading ? (
+        <CardTypeHolder
+          musicData={data.song}
+          videoData={data.musicVideo}
+          podcastData={data.podcast}
+        />
+      ) : (
+        <Box sx={{display: 'flex', justifyContent:'center', alignItems:'center', height:'50vh'}}>
+          <CircularProgress color="inherit"  />
+        </Box>
+        
+      )}
     </Box>
   );
 };

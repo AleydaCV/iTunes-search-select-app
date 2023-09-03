@@ -25,7 +25,7 @@ export const getSearchFilterLimit = async <T>(
   limit: string
 ) => {
   const param = "search?term=" + search + "&entity=" + filter + "&limit="+limit;
-  console.log('param',param)
+
   const { res, error } = await getService<T>(param);
   return {
     res: res,

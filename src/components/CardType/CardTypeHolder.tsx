@@ -11,6 +11,7 @@ interface Params {
 }
 
 const CardTypeHolder = ({ musicData, videoData, podcastData }: Params) => {
+  console.log('video', videoData)
   return (
     <Box>
       {musicData.resultCount > 0 ? (
