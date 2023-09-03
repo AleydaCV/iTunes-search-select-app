@@ -11,7 +11,7 @@ import {
 import { theme } from "../../themes/theme";
 import SearchIcon from "@mui/icons-material/Search";
 import { styled } from "@mui/material/styles";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent } from "react";
 import { SelectChangeEvent } from "@mui/material/Select";
 
 const CustomSelect = styled(Select)(() => ({
@@ -29,12 +29,11 @@ interface Params {
   handleChangeInput: (e: changeEventType) => void;
   handleChange: (event: SelectChangeEvent<unknown>) => void;
   handleSearch: () => Promise<void>;
-  search: string;
   filter: string;
 }
 
 const Filter = (params: Params) => {
-  const { handleChangeInput, handleChange, handleSearch, search, filter } =
+  const { handleChangeInput, handleChange, handleSearch, filter } =
     params;
   return (
     <Box sx={{ padding: "10px", width: "70%" }}>

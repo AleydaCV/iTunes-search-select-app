@@ -42,7 +42,7 @@ const Body = () => {
     });
     const encodedSearch = encodeURIComponent(search).replace(/%20/g, "+");
 
-    if (search != "" && filter != "") {
+    if (search !== "" && filter !== "") {
       const limits = {
         songPodcast: "10",
         musicVideo: "6",
@@ -51,14 +51,14 @@ const Body = () => {
       const { res } = await getSearchFilterLimit<ResType>(
         encodedSearch,
         filter,
-        filter == "musicVideo" ? limits.musicVideo : limits.songPodcast
+        filter === "musicVideo" ? limits.musicVideo : limits.songPodcast
       );
       setData((prevData) => ({
         ...prevData,
         [filter]: res,
       }));
       setLoading(false);
-    } else if (filter == "") {
+    } else if (filter === "") {
       const limits = {
         songPodcast: "5",
         musicVideo: "3",
@@ -86,6 +86,7 @@ const Body = () => {
       });
       setLoading(false);
     }
+    setLoading(false);
   };
 
   return (
@@ -93,23 +94,27 @@ const Body = () => {
       <Filter
         handleChangeInput={handleChangeInput}
         handleChange={handleChange}
-        handleSearch={handleSearch}
-        search={search}
+        handleSearch={handleSearch} 
         filter={filter}
       />
-
-      {/* <CardHolder></CardHolder> */}
       {!loading ? (
         <CardTypeHolder
           musicData={data.song}
           videoData={data.musicVideo}
           podcastData={data.podcast}
+          searchData = {search}
         />
       ) : (
-        <Box sx={{display: 'flex', justifyContent:'center', alignItems:'center', height:'50vh'}}>
-          <CircularProgress color="inherit"  />
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "50vh",
+          }}
+        >
+          <CircularProgress color="inherit" />
         </Box>
-        
       )}
     </Box>
   );

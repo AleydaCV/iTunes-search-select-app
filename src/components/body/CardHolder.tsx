@@ -3,24 +3,26 @@ import { ResType } from "../../interface/iTunes";
 import CardComponent from "./Card";
 
 interface Params {
-  data : ResType,
-  isVideo: boolean,
+  data: ResType;
+  isVideo: boolean;
 }
-const CardHolder = ({data, isVideo} : Params) => {
+const CardHolder = ({ data, isVideo }: Params) => {
   return (
     <Box
       sx={{
-        mt:'10px',
+        mt: "10px",
         padding: "10px",
-        width: "100%",
+        width: "90%",
         display: "grid",
         gap: 2,
-        gridTemplateColumns: "repeat(auto-fill, minmax(255px, 1fr))",
+        gridTemplateColumns: isVideo
+          ? "repeat(3, minmax(255px, 1fr))"
+          : "repeat(auto-fill, minmax(255px, 1fr))",
+        justifyItems: "center",
       }}
     >
-      {data.results.map((v) => (
-        <CardComponent data={v} isVideo={isVideo}/>
-      ))}
+      {data.resultCount > 0 &&
+        data.results.map((v) => <CardComponent data={v} isVideo={isVideo} />)}
     </Box>
   );
 };

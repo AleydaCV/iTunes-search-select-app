@@ -25,9 +25,19 @@ const CardComponent = ({ data, isVideo }: Params) => {
     >
       <CardContent sx={{ padding: "10px" }}>
         {data.artworkUrl100 ? (
-          <img src={x} alt="cover-image" width={isVideo ? 390 : 230} height={isVideo ? 200 : 250} />
+          <img
+            src={x}
+            alt="cover"
+            width={isVideo ? 390 : 230}
+            height={isVideo ? 200 : 250}
+          />
         ) : (
-          <img src={ImageDefault} alt="cover-image" width={230} height={250} />
+          <img
+            src={ImageDefault}
+            alt="cover"
+            width={isVideo ? 390 : 230}
+            height={isVideo ? 200 : 250}
+          />
         )}
 
         <Typography sx={{ fontSize: 15 }} color="white">
