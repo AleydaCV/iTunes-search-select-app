@@ -1,25 +1,47 @@
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import ImageDefault from '../../assets/image-default-2.jpg';
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import ImageDefault from "../../assets/image-default-2.jpg";
+import { GenericType } from "../../interface/iTunes";
 
-const CardComponent = () => {
-  return (
-    <Card sx={{ width: 250, height:350 , backgroundColor:'#1c1c1c'}}>
-    <CardContent sx={{padding:'10px'}}>
-        <img src={ImageDefault} alt="" width={230} height={250}/>
-      <Typography sx={{ fontSize: 20 }} color="white" >
-        Music Name
-      </Typography>
-      <Typography sx={{ fontSize: 12 }} color="white" >
-        Artist Name
-      </Typography>
-      <Typography sx={{ fontSize: 12 }} color="white" >
-        Price
-      </Typography>
-    </CardContent>
-  </Card>
-  )
+interface Params {
+  data: GenericType;
+  isVideo: boolean;
 }
 
-export default CardComponent
+const CardComponent = ({ data, isVideo }: Params) => {
+  const urlImage = data.artworkUrl100?.slice(
+    0,
+    data.artworkUrl100.lastIndexOf("/")
+  );
+  const x = urlImage + "/500x500bb.jpg";
+  return (
+    <Card
+      sx={{
+        width: isVideo ? 410 : 250,
+        height: isVideo ? 280 : 350,
+        backgroundColor: "#1c1c1c",
+      }}
+    >
+      <CardContent sx={{ padding: "10px" }}>
+        {data.artworkUrl100 ? (
+          <img src={x} alt="cover-image" width={isVideo ? 390 : 230} height={isVideo ? 200 : 250} />
+        ) : (
+          <img src={ImageDefault} alt="cover-image" width={230} height={250} />
+        )}
+
+        <Typography sx={{ fontSize: 15 }} color="white">
+          {data.trackName}
+        </Typography>
+        <Typography sx={{ fontSize: 11 }} color="white">
+          {data.artistName}
+        </Typography>
+        <Typography sx={{ fontSize: 11 }} color="white">
+          $ {data.trackPrice}
+        </Typography>
+      </CardContent>
+    </Card>
+  );
+};
+
+export default CardComponent;

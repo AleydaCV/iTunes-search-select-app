@@ -1,8 +1,12 @@
 import { Box } from "@mui/material";
+import { ResType } from "../../interface/iTunes";
 import CardComponent from "./Card";
 
-const CardHolder = () => {
-  const numbersArray = ["1,2,3,4,5,6,7,8,9,10"][0].split(",").map(Number);
+interface Params {
+  data : ResType,
+  isVideo: boolean,
+}
+const CardHolder = ({data, isVideo} : Params) => {
   return (
     <Box
       sx={{
@@ -14,8 +18,8 @@ const CardHolder = () => {
         gridTemplateColumns: "repeat(auto-fill, minmax(255px, 1fr))",
       }}
     >
-      {numbersArray.map((v) => (
-        <CardComponent />
+      {data.results.map((v) => (
+        <CardComponent data={v} isVideo={isVideo}/>
       ))}
     </Box>
   );

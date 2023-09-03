@@ -12,7 +12,7 @@ import { theme } from "../../themes/theme";
 import SearchIcon from "@mui/icons-material/Search";
 import { styled } from "@mui/material/styles";
 import { ChangeEvent, useState } from "react";
-import { SelectChangeEvent } from '@mui/material/Select';
+import { SelectChangeEvent } from "@mui/material/Select";
 
 const CustomSelect = styled(Select)(() => ({
   "& .MuiOutlinedInput-notchedOutline": {
@@ -25,22 +25,17 @@ const CustomSelect = styled(Select)(() => ({
 
 type changeEventType = ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
 
-const Filter = () => {
-  const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState("")
+interface Params {
+  handleChangeInput: (e: changeEventType) => void;
+  handleChange: (event: SelectChangeEvent<unknown>) => void;
+  handleSearch: () => Promise<void>;
+  search: string;
+  filter: string;
+}
 
-  const handleChangeInput = (e: changeEventType) => {
-    setSearch(e.target.value);
-  };
-  const handleChange = (event: SelectChangeEvent<unknown>) => {
-    setFilter(event.target.value as string);
-  };
-
-  //   ========== SEACH AND FILTER ==========
-  const handleSearch = () => {
-    console.log("a buscar", search, filter);
-  };
-
+const Filter = (params: Params) => {
+  const { handleChangeInput, handleChange, handleSearch, search, filter } =
+    params;
   return (
     <Box sx={{ padding: "10px", width: "70%" }}>
       <Grid container spacing={2}>
@@ -73,7 +68,7 @@ const Filter = () => {
               displayEmpty
             >
               <MenuItem value=""> all</MenuItem>
-              <MenuItem value="music">music</MenuItem>
+              <MenuItem value="song">music</MenuItem>
               <MenuItem value="musicVideo">video</MenuItem>
               <MenuItem value="podcast">podcast</MenuItem>
             </CustomSelect>
@@ -83,7 +78,7 @@ const Filter = () => {
           <Button
             sx={() => theme.buttons(theme.colors.black, theme.colors.white)}
             size="large"
-            onClick={()=>handleSearch()}
+            onClick={() => handleSearch()}
           >
             Search
           </Button>

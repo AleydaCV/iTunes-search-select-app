@@ -3,10 +3,15 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardComponent from "../body/Card";
 import Typography from "@mui/material/Typography";
+import { ResType } from "../../interface/iTunes";
 
-const CardFilter = () => {
-  const numbersArray = ["1,2,3,4,5"][0].split(",").map(Number);
+interface Params {
+  data: ResType;
+  text: string;
+  isVideo: boolean;
+}
 
+const CardFilter = ({ data, text, isVideo }: Params) => {
   return (
     <Card
       sx={{
@@ -15,7 +20,8 @@ const CardFilter = () => {
         height: "auto",
         backgroundColor: "#F8F9F9",
         padding: "20px",
-        marginBottom:'20px',
+        marginBottom: "20px",
+        marginTop: "20px",
       }}
     >
       <Box
@@ -28,23 +34,27 @@ const CardFilter = () => {
         }}
       >
         <Typography variant="h6" color="initial">
-          {" MUSIC"}
+          {text}
         </Typography>
-        <Button sx={{}}>View All</Button>
+        <Button >View All</Button>
       </Box>
       <CardContent
         sx={{
           padding: "10px",
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(255px, 1fr))",
+          gridTemplateColumns: isVideo 
+            ? "repeat(auto-fill, minmax(350px, 1fr))"
+            : "repeat(auto-fill, minmax(255px, 1fr))",
           justifyContent: "center",
           justifyItems: "center",
           gap: 2,
         }}
       >
-        {numbersArray.map((v) => (
-          <CardComponent />
-        ))}
+        {data.resultCount > 0
+          ? data.results.map((v) => (
+              <CardComponent data={v} isVideo={isVideo} />
+            ))
+          : null}
       </CardContent>
     </Card>
   );
