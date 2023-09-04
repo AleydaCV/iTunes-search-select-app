@@ -1,13 +1,12 @@
-
-function App() {
+import { FC } from 'react';
+import {  BrowserRouter as Router } from 'react-router-dom';
+import RoutesComponent from './routes/routes';
+const App: FC = () => {
   return (
-    <div >
-      <header>
-        I Tunes App
-       
-      </header>
-    </div>
+    <Router>
+      <RoutesComponent /> 
+    </Router>
   );
-}
+};
 
 export default App;
