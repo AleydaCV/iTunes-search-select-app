@@ -1,4 +1,4 @@
-import { Box, SelectChangeEvent } from "@mui/material";
+import { Box, SelectChangeEvent, Typography } from "@mui/material";
 import { ChangeEvent, useState } from "react";
 import Filter from "./Filter";
 import CardTypeHolder from "../CardType/CardTypeHolder";
@@ -15,6 +15,9 @@ const Body = () => {
     musicVideo: {} as ResType,
     podcast: {} as ResType,
   });
+
+  // ========= Msg Error  =======
+  const [msgError, setMessage] = useState<string | null>("");
 
   // ========= Loading  =======
   const [loading, setLoading] = useState<boolean>();
@@ -48,7 +51,7 @@ const Body = () => {
         musicVideo: "6",
       };
 
-      const { res } = await getSearchFilterLimit<ResType>(
+      const { res, error } = await getSearchFilterLimit<ResType>(
         encodedSearch,
         filter,
         filter === "musicVideo" ? limits.musicVideo : limits.songPodcast
@@ -57,6 +60,7 @@ const Body = () => {
         ...prevData,
         [filter]: res,
       }));
+      setMessage(error);
       setLoading(false);
     } else if (filter === "") {
       const limits = {
@@ -84,6 +88,10 @@ const Body = () => {
         musicVideo: resVideo.res,
         podcast: podcast.res,
       });
+      setMessage(music.error);
+      setMessage(resVideo.error);
+      setMessage(podcast.error);
+
       setLoading(false);
     }
     setLoading(false);
@@ -94,17 +102,17 @@ const Body = () => {
       <Filter
         handleChangeInput={handleChangeInput}
         handleChange={handleChange}
-        handleSearch={handleSearch} 
+        handleSearch={handleSearch}
         filter={filter}
       />
-      {!loading ? (
+      {!loading && msgError ! == null ? (
         <CardTypeHolder
           musicData={data.song}
           videoData={data.musicVideo}
           podcastData={data.podcast}
-          searchData = {search}
+          searchData={search}
         />
-      ) : (
+      ) : msgError === null ? (
         <Box
           sx={{
             display: "flex",
@@ -115,6 +123,10 @@ const Body = () => {
         >
           <CircularProgress color="inherit" />
         </Box>
+      ) : (
+        <Typography variant="h6" color="error">
+          {msgError}
+        </Typography>
       )}
     </Box>
   );

@@ -45,6 +45,7 @@ const CardTypeHolder = ({
           data={podcastData}
           text="PODCAST"
           isVideo={false}
+          isPodcast={true}
           search={searchData}
           kind={"podcast"}
         />

@@ -5,8 +5,9 @@ import CardComponent from "./Card";
 interface Params {
   data: ResType;
   isVideo: boolean;
+  isPodcast?: boolean;
 }
-const CardHolder = ({ data, isVideo }: Params) => {
+const CardHolder = ({ data, isVideo, isPodcast }: Params) => {
   return (
     <Box
       sx={{
@@ -22,7 +23,14 @@ const CardHolder = ({ data, isVideo }: Params) => {
       }}
     >
       {data.resultCount > 0 &&
-        data.results.map((v) => <CardComponent data={v} isVideo={isVideo} />)}
+        data.results.map((v, index) => (
+          <CardComponent
+            key={index}
+            data={v}
+            isVideo={isVideo}
+            isPodcast={isPodcast}
+          />
+        ))}
     </Box>
   );
 };

@@ -16,14 +16,18 @@ const GetAll = (params: Params) => {
   const { search, kind, text } = params;
   const isVideo = kind === "musicVideo" ? true : false;
   const [data, setData] = useState({} as ResType);
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
+  // ========= Msg Error  =======
+  const [msgError, setMessage] = useState<string | null>("");
 
   const handleGetAllData = async () => {
-    const { res } = await getSearchFilter<ResType>(search, kind);
+    setLoading(true);
+    const { res, error } = await getSearchFilter<ResType>(search, kind);
     if (res) {
       setData(res);
     }
-    setLoading(true)
+    setMessage(error);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -31,11 +35,16 @@ const GetAll = (params: Params) => {
   }, [search, kind]);
 
   return (
-    <Box sx={{ display: 'flex', alignItems:'center', flexDirection:'column'}}>
-       <Typography sx={{ fontSize: 25, marginTop:'20px' }} color="black">
-          {text}
-        </Typography>
-        {loading ? (<ShowAll data={data} isVideo={isVideo} />) : (<Box
+    <Box
+      sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}
+    >
+      <Typography sx={{ fontSize: 25, marginTop: "20px" }} color="black">
+        {text}
+      </Typography>
+      {!loading && msgError ! == null ? (
+        <ShowAll data={data} isVideo={isVideo} />
+      ) : msgError === null  || msgError !== "" ? (
+        <Box
           sx={{
             display: "flex",
             justifyContent: "center",
@@ -44,8 +53,12 @@ const GetAll = (params: Params) => {
           }}
         >
           <CircularProgress color="inherit" />
-        </Box>)}
-      
+        </Box>
+      ) : (
+        <Typography variant="h6" color="error">
+          {msgError}
+        </Typography>
+      )}
     </Box>
   );
 };

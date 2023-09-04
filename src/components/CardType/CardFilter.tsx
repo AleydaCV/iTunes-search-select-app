@@ -10,12 +10,13 @@ interface Params {
   data: ResType;
   text: string;
   isVideo: boolean;
+  isPodcast?: boolean;
   search: string;
   kind: string;
 }
 
 const CardFilter = (params: Params) => {
-  const { data, text, isVideo, search, kind } = params;
+  const { data, text, isVideo, search, kind, isPodcast } = params;
   const navigateTo = useNavigate();
   const handleView = (text: string) => {
     navigateTo("/viewAll/" + kind + "/" + search, { state: { text: text } });
@@ -60,7 +61,12 @@ const CardFilter = (params: Params) => {
       >
         {data.resultCount > 0
           ? data.results.map((v, index) => (
-              <CardComponent key={index} data={v} isVideo={isVideo} />
+              <CardComponent
+                key={index}
+                data={v}
+                isVideo={isVideo}
+                isPodcast={isPodcast}
+              />
             ))
           : null}
       </CardContent>

@@ -22,6 +22,7 @@ export interface GenericType {
   trackName: string;
   trackPrice: number;
   artworkUrl100?: string;
+  previewUrl?: string;
 }
 
 export interface ResType {
