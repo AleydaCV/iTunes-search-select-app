@@ -8,7 +8,6 @@ import IconButton from "@mui/material/IconButton";
 import PauseCircleIcon from "@mui/icons-material/PauseCircle";
 import { Box } from "@mui/material";
 import { useRef, useState } from "react";
-import ReactAudioPlayer from "react-audio-player";
 
 interface Params {
   data: GenericType;
